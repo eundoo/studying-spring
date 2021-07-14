@@ -96,5 +96,5 @@ public class Product {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-
+	
 }
