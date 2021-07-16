@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>자바스크립트의 Date객체</h1>
+	
+	<h3>현재 날짜와 시간</h3>
+	<p id="result-1"></p>
+	<h3>현재 날짜와 시간</h3>
+	<p id="result-2"></p>
+	<h3>현재 날짜</h3>
+	<p id="result-3"></p>
+	<h3>현재 날짜와 시간</h3>
+	<p id="result-4"></p>
+	<h3>특정한 날의 날짜와 시간</h3>
+	<p id="result-5"></p>
+	
+<script type="text/javascript">
+	//현재 날짜와 시간 정보를 가지는 객체 생성하기
+	var now = new Date();
+	
+	//현재 날짜와 시간 정보를 화면에 출력하기
+	document.getElementById('result-1').textContent = now()
+	//$('#result-1').text(now)
+	
+	//현재 날짜와 시간 정보를 형식화된 문자열로 화면에 출력하기
+	var formattedString = new.toLocaleString()
+	document.getElementById('result-2').textContent = formattedString
+	
+	//현재 날짜를 형식화된 문자열로 화면에 출력하기
+	var formattedString2 = now.toLocaleString()
+	document.getElementById("result-3").textContent = formattedString2
+	
+	//현재 날짜와 시간 정보에서 년도 알아오기	// 2021
+	var year = now.getFullYear()
+	//현재 날짜와 시간 정보에서 월 알아오기	// 7
+	var month = now.getMonth() + 1
+	//현재 날짜와 시간 정보에서 일 알아오기	// 12
+	var day = now.getDate()
+	//현재 날짜와 시간 정보에서 시간 알아오기	
+	var hour = now.getHours()
+	//현재 날짜와 시간 정보에서 분 알아오기
+	var minute = now.getMinutes()	
+	//현재 날짜와 시간 정보에서 초 알아오기
+	var second = now.getSeconds()
+	//현재 날짜와  시간 정보에서 유닉스 타임 알아오기				
+	var unixTime = now.getTime()
+	
+	var items = [year, month, day, hour, minute, second, unixTime]
+	document.getElementById('result-4').textContent = items
+	
+	//지정된 날짜의 날짜와 시간 정보를 가지는 Date객체 만들기
+	//태어난 날짜와 시간이 2020년 1월 9일 14시 34분 59초인 사람의 날짜와 시간정보 객체 만들기
+	var birth = new Date(2020, 0, 1, 14, 34, 59)
+	document.getElementById('result-5').textContent = birth
+</script>
+</body>
+</html>

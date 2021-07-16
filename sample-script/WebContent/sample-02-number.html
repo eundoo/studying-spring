@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>숫자 다루기</h1>
+	<h3>계산결과1</h3>
+	<p id="box-1"></p>
+	<p id="box-2"></p>
+	
+	<h3>숫자 값 읽기</h3>
+	가격 : <input type="number" id="num-1" value="18">
+	수량 : <input type="number" id="num-2" value="3">
+	<p id="box-3"></p>
+	<p id="box-4"></p>
+	<p id="box-5"></p>
+	<p id="box-6"></p>
+	
+	<h3>숫자값 읽기</h3>
+	<input type="text" id="price" value="30000">
+	<input type="text" id="amount" value="1개">
+	<p id="box-7"></p>
+	
+<script type="text/javascript">
+	//자바스크립트에서 숫자는 언제나 64비트 실수형이다.
+	var num1 = 0.1
+	var num2 = 0.2
+	var result = num1 + num2
+	var result2 = (num*10 + num*10)/10
+	document.getElementById("box-1").textContext = result
+	document.getElementById("box-2").textContext = result2
+
+	//입력필드의 값 읽어서 사칙연산 수행하기
+	num1 = document.getElementById("num-1").value
+	num2 = document.getElementById("num-2").value
+	
+	//더하기 할 때는 그냥 이어붙이기 때문에 parseInt를 꼭 붙여야 한다.
+	//사칙연산의 덧셈 연산에 사용되는 값은 반드시 숫자값(정수, 실수)이어야 한다.
+	//parseInt(), parseFloat() 함수를 사용해서 정수나 실수로 변환한 다음 사용한다.
+	result = parseInt(num1) + parseInt(num2)
+	document.getElementById("box-3").textContent = result
+	result = num1 - num2
+	document.getElementById("box-4").textContent = result
+	result = num1 * num2
+	document.getElementById("box-5").textContent = result
+	result = num1 / num2
+	document.getElementById("box-6").textContent = result
+	
+	//NaN(Not a Number)	: 숫자가 아닌 값 혹은 숫자로 변환할 수 없는 값으로 사칙연산을 수행했을 때 나오는 결과 값
+	num1 = document.getElementById("price").value	//30000
+	num2 = document.getElementById("amount").value	//1개
+	result = num1 * num2							//연산결과 NaN
+	document.getElementById("box-7").textContent = result
+	
+	//isNaN(값)함수는 값이 NaN인지 검사해서 true/false값을 반환한다.
+	result = (NaN == NaN)	//비교결과가 false이다.
+	result = isNaN(NaN)		//연산결과는 true이다. 
+	if(3000*'1개' == NaN) {}		//좌항의 계산결과 NaN이지만 비교연산 최종 결과는 false이다.
+	if(isNaN(3000*'1개')) {}		//isNaN함수내의 연산결과가 NaN이기 때문에 isNaN()함수의 실행결과가 true이다.
+</script>
+</body>
+</html>
