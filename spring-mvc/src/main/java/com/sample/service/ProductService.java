@@ -1,6 +1,7 @@
 package com.sample.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sample.vo.CartItem;
 import com.sample.vo.Product;
@@ -26,4 +27,13 @@ public interface ProductService {
 	 * @param cartItem 장바구니 아이템 정보
 	 */
 	void addCartItem(CartItem cartItem);
+	
+	/**
+	 * 지정된 사용자의 장바구니 아이템 정보를 제공하는 서비스
+	 * @param userId 사용자 아이디
+	 * @return 장바구니 아이템 정보 목록
+	 */
+	
+	//조인할때 Dto를 만들어야되는데 그냥 맵으로 이렇게도 해도되나봐
+	List<Map<String, Object>> getMyCartItems(String userId);
 }

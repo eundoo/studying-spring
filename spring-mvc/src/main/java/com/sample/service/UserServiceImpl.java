@@ -1,10 +1,15 @@
 package com.sample.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sample.dao.CartItemDao;
 import com.sample.dao.UserDao;
+import com.sample.vo.CartItem;
 import com.sample.vo.User;
 import com.sample.web.utils.SessionUtils;
 
@@ -13,6 +18,15 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	CartItemDao cartItemDao;
+	
+	//@Autowired
+	//OrderService orderService;
+	
+	//@Autowired
+	//PointHistoryDao pointHistoryDao;
 	
 	@Override
 	public  void registerUser(User user) {
@@ -57,5 +71,22 @@ public class UserServiceImpl implements UserService{
 		SessionUtils.addAttribute("LOGINED_USER", user);
 		
 		//조회된 사용자 정보
+	}
+	
+	@Override
+	public Map<String, Object> getUserDetail(String id) {
+		Map<String, Object> userDetailMap = new HashMap<>();
+		
+		//최신의 사용자 정보 조회
+		User user = userDao.getUserById(id);
+		
+		userDetailMap.put("user", user);
+		//userDetailMap.put("user", User객체);
+		//userDetailMap.put("cartItems", 장바구니에 저장된 아이템정보들);
+		//userDetailMap.put("orders", 최근 구매내약);
+		//userDetailMap.put("reviews", 내가 작성한 리뷰);
+		//userDetailMap.put("pointHistory", 포인트변경 이력);
+	
+		return userDetailMap;
 	}
 }

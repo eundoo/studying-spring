@@ -1,6 +1,7 @@
 package com.sample.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class ProductServiceImpl implements ProductService {
 			savedCartItem.setAmount(savedCartItem.getAmount() + 1);
 			cartItemDao.updateCartItem(savedCartItem);
 		}
+	}
+	
+	//Map이 여러개 들어있는 List
+	public List<Map<String,Object>> getMyCartItems(String userId) {
+		return cartItemDao.getCartItemsByUserId(userId);
 	}
 }

@@ -1,6 +1,7 @@
 package com.sample.web.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ import com.sample.service.ProductService;
 import com.sample.vo.CartItem;
 import com.sample.vo.Product;
 import com.sample.vo.User;
+import com.sample.web.annotation.LoginUser;
 import com.sample.web.utils.SessionUtils;
 
 @Controller
@@ -65,7 +67,7 @@ public class ProductController {
 	//																			패키지랑 클래스를 만들어서 거기다가 뭐 해놓고 
 	
 	//	public String addCartItem(@RequestParam("no") int productNo , User user) 이렇게 쓰면 User빈 객체를 만들어서 요청객체에서 값꺼내서 넣음
-	public String addCartItem(@RequestParam("no") int productNo, @LoginUser User user) {
+	public String addCartItem(@RequestParam("no") int productNo, @LoginUser User user ) {
 		logger.debug("addCartItem() 실행됨");
 		logger.info("장바구니에 저장할 상품번호" + productNo);
 		
@@ -76,13 +78,30 @@ public class ProductController {
 			throw new RuntimeException("장바구니 담기는 로그인 후 사용가능한 서비스입니다.");
 		}
 		
-		CartItem cartItem = new CartItem(); 
+		CartItem cartItem = new CartItem();  
 		cartItem.setUserId(user.getId());
 		cartItem.setProductNo(productNo);
 		
 		productService.addCartItem(cartItem);		
 		
 		logger.debug("addCartItem() 종료됨");
-		return "redirect:listCart";
+		return "redirect:cart";
+	}
+	
+	@GetMapping("/cart")
+	//@LoginUser가 있네? 세션에서 찾아야 겠다.
+	//화면에 표출해야 하니까 Model이 필요하겠네 해서 Model
+	public String cart(@LoginUser User user, Model model) {
+		logger.debug("cart() 실행됨");
+		logger.info("로그인된 사용자 정보: " + user);
+		if (user == null) {
+			throw new RuntimeException("장바구니 조회는 로그인 후 사용가능한 서비스 입니다.");
+		}
+		List<Map<String, Object>> items = productService.getMyCartItems(user.getId());
+		logger.info("조회된 장바구니 아이템 목록: " + items);
+		model.addAttribute("items", items);
+		
+		logger.debug("cart() 종료됨");
+		return "product/cart";
 	}
 }
