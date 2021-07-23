@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sample.dao.CartItemDao;
 import com.sample.dao.UserDao;
+import com.sample.exception.SampleException;
 import com.sample.vo.CartItem;
 import com.sample.vo.User;
 import com.sample.web.utils.SessionUtils;
@@ -32,11 +33,11 @@ public class UserServiceImpl implements UserService{
 	public  void registerUser(User user) {
 		User savedUser = userDao.getUserById(user.getId());
 		if(savedUser != null) {
-			throw new RuntimeException("["+user.getId()+"]는 이미 사용중인 아이디 입니다.");
+			throw new SampleException("ER_USER_001", "아이디 중복", "["+user.getId()+"]는 이미 사용중인 아이디 입니다.");
 		}
 		savedUser = userDao.getUserByEmail(user.getEmail());
 		if(savedUser != null) {
-			throw new RuntimeException("["+user.getEmail()+"]는 이미 등록된 이메일 입니다.");
+			throw new SampleException("ERR_USER_001", "이메일 중복", "["+user.getEmail()+"]은 이미 사용중인 이메일 입니다.");
 		}
 		
 		String secretPassword = DigestUtils.sha256Hex(user.getPassword());
@@ -56,14 +57,14 @@ public class UserServiceImpl implements UserService{
 		//사용자 정보 조회 - null인지 체크, 삭제된 사용자인지 체크, 비밀번호가 일치하는지 체크
 		User user = userDao.getUserById(userId);
 		if(user == null) {
-			throw new RuntimeException("아이디 혹은 비밀번호가 일치하지 않습니다.");
+			throw new SampleException("ERR_USER_002", "아이디/비밀번호 오류", "아이디 혹은 비밀번호가 유효하지 않습니다.");
 		}
 		if(!"ACTIVE".equalsIgnoreCase(user.getStatus())) {
-			throw new RuntimeException("탈퇴처리된 사용자 입니다.");			
+			throw new SampleException("ERR_USER_002", "사용중지된 회원", "탈퇴 혹은 일시정지 처리된 사용자입니다.");			
 		}
 		String secretPassword = DigestUtils.sha256Hex(password);
 		if(!user.getPassword().contentEquals(secretPassword)) {
-			throw new RuntimeException("아이디혹은 비밀번호가 일치하지 않습니다.");
+			throw new SampleException("ERR_USER_002", "아이디/비밀번호 오류", "아이디 혹은 비밀번호가 유효하지 않습니다.");
 		}
 		
 		//HttpSession객체에 사용자 인증이 완료된 사용자 정보를 

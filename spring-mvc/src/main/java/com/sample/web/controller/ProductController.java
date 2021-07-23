@@ -72,7 +72,7 @@ public class ProductController {
 		logger.info("장바구니에 저장할 상품번호" + productNo);
 		
 		//이렇게 getAttribute로 걍 얻어올 수 있다.
-		User user = (User) SessionUtils.getAttribute("LOGINED_USER");
+		//User user = (User) SessionUtils.getAttribute("LOGINED_USER");
 		logger.info("로그인된 사용자 정보: " + user);
 		if(user == null) {
 			throw new RuntimeException("장바구니 담기는 로그인 후 사용가능한 서비스입니다.");

@@ -6,10 +6,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sample.exception.SampleException;
 import com.sample.service.UserService;
 import com.sample.vo.User;
 import com.sample.web.form.UserRegisterForm;
@@ -27,6 +29,25 @@ public class HomeController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@ExceptionHandler(SampleException.class)
+	public String handleSampleException(SampleException ex, Model model) {
+		model.addAttribute("error", ex);	//model에 error라는 이름으로 담았으니까 form.jsp에서 error.로 찾을 수 있다.
+		if("ERR_USER_001".equals(ex.getCode())) {
+			return "form";	//redirect안하는 이유는 form으로 하면 정보를 다 담아서 줄 수 있기 때문에 여기 2-3시 강의 다시 듣기
+		} else if("ERR_USER_002".equals(ex.getCode())) {
+			return "loginform";
+		}
+		return "error/server";
+	}
+//	@ExceptionHandler(DuplicatedIdAndEmailexception.class)
+//	public String handleDuplicatedIdAndEmailException() {
+//		logger.error("##### 예외가 발생하였습니다.");
+//		return null;
+//	}
+	//예외들 마다 이렇게 만들 수 있다.
+	//UserNotFoundException이 RuntimeException과 Exception의 자손이다. 모든 Exception은 이 둘 중 하나 무조건 자손이다.
+
 	/*
 	 * @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
 	 * 		- 요청URL와 요청핸들러 메소드를 매핑시킨다.
@@ -158,20 +179,19 @@ public class HomeController {
 	@PostMapping("/register")
 	public String register(UserRegisterForm userRegisterForm) {
 		logger.debug("register() 실행됨");
-		logger.info("회원가입 정보: " + userRegisterForm);
+		logger.info("회원가입정보: " + userRegisterForm);
 		
-		//User객체를 생성하고, UserRegisterForm의 값을 User객체로 복사한다.
+		// User객체를 생성하고, UserRegisterForm의 값을 User객체로 복사한다.
 		User user = new User();
 		BeanUtils.copyProperties(userRegisterForm, user);
 		
-		//UserService의 registerUser(user)를 호출해서 업무로직을 수행한다.
+		// UserService의 registerUser(user)를 호출해서 업무로직을 수행한다. 
 		userService.registerUser(user);
-		
+				
 		logger.info("회원정보 등록 요청을 처리함");
 		logger.debug("register() 종료됨");
 		
 		return "redirect:home";
-		
 	}
 	
 	@GetMapping("/login")
@@ -184,12 +204,19 @@ public class HomeController {
 	public String login(@RequestParam("id") String userId,
 			@RequestParam("password") String userPassword) {
 		logger.debug("login() 실행됨");
-		logger.info("로그인된 사용자 아이디: " + userId);
-		logger.info("로그인된 사용자 비밀번호: " + userPassword);		
+		logger.info("로그인하는 사용자의 아이디: " + userId);
+		logger.info("로그인하는 사용자의 비밀번호: " + userPassword);
 		
 		userService.login(userId, userPassword);
-		
 		logger.debug("login() 종료됨");
+		
+		// 로그인 전 페이지로 되돌아가기
+		String returnPath = (String) SessionUtils.getAttribute("returnPath");
+		SessionUtils.removeAttribute("returnPath");
+		if (returnPath != null) {
+			return "redirect:" + returnPath;
+		}
+		
 		return "redirect:home";
 	}
 	

@@ -10,6 +10,7 @@ import com.sample.dao.CartItemDao;
 import com.sample.dao.ProductDao;
 import com.sample.vo.CartItem;
 import com.sample.vo.Product;
+import com.sample.vo.User;
 
 /**
  * 상품정보관련 업무로직 메소드를 전부 구현하고 있는 구현 클래스다.<br />
