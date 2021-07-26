@@ -7,7 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-//form.jsp에 name에 똑같은 이름으로 만들어야함
 public class UserRegisterForm {
 
 	private String id;

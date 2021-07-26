@@ -16,4 +16,5 @@ public class CartItem {
 	private int productNo;
 	private int amount;
 	private Date createdDate;
+	
 }

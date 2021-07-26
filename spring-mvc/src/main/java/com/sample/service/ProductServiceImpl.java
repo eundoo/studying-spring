@@ -1,16 +1,15 @@
 package com.sample.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.sample.dao.CartItemDao;
 import com.sample.dao.ProductDao;
-import com.sample.vo.CartItem;
+import com.sample.dao.ReviewDao;
 import com.sample.vo.Product;
-import com.sample.vo.User;
+import com.sample.vo.Review;
 
 /**
  * 상품정보관련 업무로직 메소드를 전부 구현하고 있는 구현 클래스다.<br />
@@ -18,15 +17,11 @@ import com.sample.vo.User;
  *
  */
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 	
-	/*
-	 * ProductDao 매퍼 인터페이스를 구현한 매퍼 인스턴스(객체)가 주입된다.
-	 */
-	@Autowired
-	private ProductDao productDao;
-	@Autowired
-	private CartItemDao cartItemDao;
+	@Autowired ProductDao productDao;
+	@Autowired ReviewDao reviewDao;
 	
 	@Override
 	public List<Product> getAllProducts() {
@@ -35,22 +30,30 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public Product getProductDetail(int productNo) {
-		return productDao.getProductByNo(productNo);
+		Product product = productDao.getProductByNo(productNo);
+		if (product != null) {
+			product.setReviews(reviewDao.getReviewsByProductNo(productNo));
+		}
+		return product;
 	}
 	
 	@Override
-	public void addCartItem(CartItem cartItem) {
-		CartItem savedCartItem = cartItemDao.getCartItem(cartItem.getUserId(), cartItem.getProductNo());
-		if(savedCartItem == null) {
-			cartItemDao.insertCartItem(cartItem);
-		} else {
-			savedCartItem.setAmount(savedCartItem.getAmount() + 1);
-			cartItemDao.updateCartItem(savedCartItem);
-		}
+	public void addReview(Review review) {
+		reviewDao.insertReview(review);
+		
+		Product product = productDao.getProductByNo(review.getProductNo());
+		product.setReviewCnt(product.getReviewCnt() + 1);
+		productDao.updateProduct(product);
 	}
 	
-	//Map이 여러개 들어있는 List
-	public List<Map<String,Object>> getMyCartItems(String userId) {
-		return cartItemDao.getCartItemsByUserId(userId);
+	@Override
+	public void removeReview(int reviewNo, String userId) {
+		Review review = reviewDao.getReviewByNo(reviewNo);
+		reviewDao.deleteReview(review.getNo());
+		
+		Product product = productDao.getProductByNo(review.getProductNo());
+		product.setReviewCnt(product.getReviewCnt() - 1);
+		productDao.updateProduct(product);		
 	}
+
 }

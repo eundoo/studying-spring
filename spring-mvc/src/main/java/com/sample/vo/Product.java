@@ -1,6 +1,7 @@
 package com.sample.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Product {
 	private String soldOut;
 	private int reviewCnt;
 	private Date createdDate;
+	private List<Review> reviews;
 	
 	
 }
