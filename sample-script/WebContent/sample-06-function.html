@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+	<div id="box">
+		<p>첫번째</p>
+		<p>첫번째</p>
+		<p>첫번째</p>
+		<p>첫번째</p>
+		<p>첫번째</p>
+	</div>
+
+<script type="text/javascript">
+	//객체를 반환하는 함수
+	function fn1() {
+		var num1 = x
+		var num2 = y
+		//function안에서만 작동해야하는 것들을 여러번 사용할 수 있다.
+		return {
+			plus: function() {
+				return num1 + num2
+			},
+			minus: function() {
+				return num1 - num2
+			}
+		}
+	}
+	
+	//fn1()을 실행하면 plus, minus메소드를 포함하고 있는 객체가 반환된다.
+	var calculator = fn1(100,200)
+	calculator.plus()
+	calculator.minus()
+	
+	//$()함수를 실항해면 css, hide, show, text, html메소드를 포함하고 있는 객체가 반환된다.
+	//$()함수를 실행하면 선택자에 해당하는 엘리먼트가 검색되고, 검색된 결과를 미리 저장해 놓고 여러 종류의 엘리먼트 조작함수를 수행해 할 수 있다.
+	var jQuery = $('p')
+	jQuery.css('color', 'red')
+	jQuery.hide()
+	
+	$('p:first-child').text('안녕하세요').css('color', 'red')
+	//$함수가 객체를 반환하는 함수였나봐 그래서 제이쿼리에서 ${}이것도 보면 객체를 반환한다?
+	
+	//함수가 원래 한번 실행되면 없어지는데 아래처럼
+	//반환하는 객체가 있으면 변수(elements)는 사라지지 않는다(객체가 사용중일 때) -> 페이지가 닫힐 때 사라진다.
+			
+	//객체를 반환하는 함수 (이거 제이쿼리처럼 보이게 할려고 $함수로 한거고 제이쿼리 안에가 이 하위 처럼 생겼을거라고 한거임)
+	function $(selector) {
+		//선택자로 검색된 엘리먼트를 elements 변수에 대입한다.
+		var elements = document.querySelectorAll(selector)
+		
+		//아래의 객체는 elements에 저장된 엘리먼트를 조회하는 메소드로 구성되어 있다.
+		//각각의 메소드는 this를 반환하기 때문에 메소드 체이닝이 지원된다.
+		return {
+			css: function(name, value) {
+				for (var i=0; i<elements.length; i++) {
+					var el = elements[i]
+					el.style[name] = value
+				}
+				return this
+			},
+			hide: function() {
+				this.css('display', 'none')
+				return this
+			},
+			show: function() {
+				this.css('thisplay', '')
+				return this
+			},
+			text: function(content) {
+				for(var i=0; i<elements.length; i++) {
+					elements[i].innerHTMKL = htmlContent
+				}
+				return this
+			}
+		}
+	}
+	
+	//함수를 반환하는  함수
+	function fn2() {
+		return function() {
+			
+		}
+	}
+</script>
+</body>
+</html>

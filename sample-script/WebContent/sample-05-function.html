@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	div{
+		border:1px solid black;
+		padding:10px;
+		margin:10px;
+	}
+</style>
+</head>
+<body>
+	<div id="button-box-1">
+		<button>버튼</button>
+		<button>버튼</button>
+		<button>버튼</button>
+	</div>
+	
+	<div id="button-box-2">
+		<button>버튼</button>
+		<button>버튼</button>
+		<button>버튼</button>
+	</div>
+
+	<div id="button-box-3">
+		<button>버튼</button>
+		<button>버튼</button>
+		<button>버튼</button>
+	</div>
+<script type="text/javascript">
+	var buttons1 = document.querySelectorAll("#button-box-1 button")
+	for (var i=0; i<3; i++) {
+		var btn1 = buttons1[i]
+		btn1.onclick = function() {
+			alert(i)
+		}
+	}
+	var buttons2 = document.querySelectorAll('#button-box-2 button')
+	for(var i=0; i<3; i++) {
+		var btn2 = buttons2[i]
+		addEventHandler(btn2,i)
+	}
+	//함수마다 고유 영역이 생겨서 덮어쓰기가 아니고 객체처럼 변수가 따로 저장된다. 고유한 컨텍스트가 선택된다 (클로저)
+	function addEventHandler(btn, num) {
+		btn.onclick = function() {
+			alert(num)
+		}
+	}
+</script>
+</body>
+</html>
