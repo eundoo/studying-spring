@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>샘플 애플리케이션</title>
+</head>
+<body>
+<div class="container my-3">
+	<div class="row mb-3">
+		<div class="col">
+			<div class="border p-2 bg-dark text-white fw-bold">도서 목록</div>
+		</div>
+	</div>
+	<div class="row mb-1">
+		<div class="col">
+			<div class="border px-2 py-1 bg-primary text-white fw-bold">베스트 셀러</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col">
+			<table class="table" id="table-bestseller-books">
+				<colgroup>
+					<col width="5%">
+					<col width="5%">
+					<col width="*">
+					<col width="10%">
+					<col width="15%">
+					<col width="10%">
+					<col width="10%">
+					<col width="7%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="text-center"><input type="checkbox" id="checkbox-all"></th>
+						<th class="text-center">번호</th>
+						<th class="text-center">제목</th>
+						<th class="text-center">작가</th>
+						<th class="text-center">출판사</th>
+						<th class="text-end">가격</th>
+						<th class="text-end">할인가격</th>
+						<th class="text-center"></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row mb-1">
+		<div class="col">
+			<div class="border px-2 py-1 bg-warning text-white fw-bold">내가 선택한 책</div>
+		</div>
+	</div>
+	<div class="row mb-3">
+		<div class="col">
+			<table class="table" id="table-selected-books">
+				<colgroup>
+					<col width="5%">
+					<col width="5%">
+					<col width="*">
+					<col width="10%">
+					<col width="15%">
+					<col width="10%">
+					<col width="10%">
+					<col width="7%">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="text-center"><input type="checkbox" id="checkbox-all"></th>
+						<th class="text-center">번호</th>
+						<th class="text-center">제목</th>
+						<th class="text-center">작가</th>
+						<th class="text-center">출판사</th>
+						<th class="text-end">가격</th>
+						<th class="text-end">할인가격</th>
+						<th class="text-center"></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(function() {
+	var books = [
+		{no:1001, title:"미래의 부", writer:"이지성", publisher:"차이정원", price:17000, discountPrice:15300},	
+		{no:1002, title:"달러구트 꿈 백화점 2", writer:"이미예", publisher:"팩토리나인", price:13500, discountPrice:12420},	
+		{no:1003, title:"흔한 남매 8", writer:"백난도", publisher:"미래앤아이세움", price:14000, discountPrice:12150},	
+		{no:1004, title:"강경원의 백 투 베이직", writer:"강경원", publisher:"세미콜론", price:21000, discountPrice:17550},	
+		{no:1005, title:"미드나잇 라이브러리", writer:"노진선", publisher:"인플루엔셜", price:16000, discountPrice:14200}	
+	];
+	
+	//담기 버튼을 클릭했을 때 실행된다.
+	$('table-bestseller-books tobody').on('click', 'btn-primary', function() {
+//클릭한 버튼이 포함된 tr을 찾기
+//1. 책번호로 찾기
+		//클릭한 버튼에서 책 번호 알아내기 <button data-book-no='1001'>
+		var selectBookNo = $(this).data('book-no')
+		//알아낸 책 번호로 그 책정보가 있는 tr을 찾기 $('#table-bestseller-books tbody tr[data-book-no=1001]')
+		var $selectedTr = $('#table-bestseller-books tbody tr[data-book-no='+selectedBookNo+']')
+		//var $selectedTr = $(this).closest('tr')
+//2. .closest(선택자)로 찾기
+		//획득한 tr의 자식엘리먼트인 td 전부 찾기 .find(선택자) 자손중에서 선택자에 해당하는 엘리먼트 전부 찾기
+		var $tds = $selectedTr.find('td')
+//획득된 tr의 책정보 획득하기
+		//획득한 td를 중에서 1번째 td의 텍스트내용 조회하기
+		//.eq(인덱스) 검색된 엘리먼트 중에서 index번쩨의 엘리먼트 찾기
+		//$tds는 jQuery객체 -> {elements:[td0, td1...], 메소드, 메소드}
+		//$tds.eq(1)는 jQuery객체 -> {elements:[td1], 메소드, 메소드}
+		var no = $tds.eq(1).text()
+		var title = $tds.eq(2).text()
+		var writer = $tds.eq(3).text()
+		var publisher = $tds.eq(4).text()
+		var price = $tds.eq(5).text()
+		var discountPrice = $tds.eq(6).text()
+		
+//조회된 책정보로 내가 선택한 책 테이블에 책정보를 추가하기 - 내일
+		var row = '<tr data-book-no="'+no+'">'
+			row += '<td class="text-center"><input type="checkbox" name="bookNo" value="'+book.no+'" /></td>';
+			row += '<td class="text-center">'+no+'</td>';
+			row += '<td class="text-center">'+title+'</td>';
+			row += '<td class="text-center">'+writer+'</td>';
+			row += '<td class="text-center">'+publisher+'</td>';
+			row += '<td class="text-end">'+price+'</td>';
+			row += '<td class="text-end">'+discountPrice+'</td>';
+			row += '<td class="text-center"><button class="btn btn-danger btn-sm" data-book-no="'+book.no+'">삭제</td>';
+			row += "</tr>";
+
+//획득한 tr의 체크박스의 버튼을 비활성화 하기
+
+		//선택한 tr안에 있는 체크박스 비활성화하기
+		$selectedTr.find(':checked').prop('disabled',true)
+		//지금 클릭한 버튼 비활성화하기
+		$(this).prop('disabled', true)
+
+		
+		//$('#table-bestseller-books tbody tr[data-book-no='+1002+']')
+	})
+	
+	$('#table-selected books tbody').on('click', 'btn-danger', function() {
+		//var bookNo = $(this).data('book-no')
+		//$(this).closest('tr').remove()
+		var bookNo = $(this).closest('tr').remove().end().data('book-no') //button -> tr -> end() -> button
+	});
+	
+	// 배열에 저장된 값을 table-bestseller-books 테이블의 tbody에 추가하기
+	(function() {
+		var $tbody = $("#table-bestseller-books tbody").empty();
+		
+		//화면에 뿌리기?
+		//조회된 데이터가 배열인 경우, 반드시 $.each(배열, 콜백)로 데이터를 처리하자
+		$.each(books, function(index, book) {
+			var row = '<tr data-book-no="'+book.no+'">'
+			row += '<td class="text-center"><input type="checkbox" name="bookNo" value="'+book.no+'" /></td>';
+			row += '<td class="text-center">'+book.no+'</td>';
+			row += '<td class="text-center">'+book.title+'</td>';
+			row += '<td class="text-center">'+book.writer+'</td>';
+			row += '<td class="text-center">'+book.publisher+'</td>';
+			row += '<td class="text-end">'+book.price+'</td>';
+			row += '<td class="text-end">'+book.discountPrice+'</td>';
+			row += '<td class="text-center"><button class="btn btn-primary btn-sm" data-book-no="'+book.no+'">담기</td>';
+			row += "</tr>";
+			$('#table-selected-books tbody').append(row)
+			
+			$tbody.append(row);
+		})
+	})();
+})
+</script>
+</body>
+</html>
