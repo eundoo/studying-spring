@@ -51,7 +51,6 @@ public class ProductController {
 	
 	// 실제 요청 URL : localhost/spring-mvc/product/detail?no=100
 	@GetMapping("/detail")
-	
 	//productNo를 넘겨받고 Model객체도 전달받음
 	public String details(@RequestParam("no") int productNo, Model model) {
 		// 상품번호에 해당하는 상품정보 조회
@@ -94,13 +93,3 @@ public class ProductController {
 		return "redirect:detail";
 	}
 }
-
-
-
-
-
-
-
-
-
-
